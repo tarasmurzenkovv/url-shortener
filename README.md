@@ -1,7 +1,7 @@
 # Intro
 
 ## Before
-You need to spin up the Redis container locally
+You need to spin up the Redis container locally. You can use `docker-compose.yml` for that. 
 
 ## How to run locally
 
