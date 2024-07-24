@@ -3,24 +3,20 @@ package com.taras.murzenkov.urlshortener
 import io.restassured.RestAssured
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.*
+import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.data.redis.core.RedisTemplate
-import org.springframework.data.redis.core.StringRedisTemplate
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
-
 @Testcontainers
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(PER_CLASS)
 class UrlShortenerApplicationTests {
-    @Autowired
-    private lateinit var stringRedisTemplate: StringRedisTemplate
-
     @Autowired
     private lateinit var redisTemplate: RedisTemplate<String, String>
 
@@ -30,7 +26,7 @@ class UrlShortenerApplicationTests {
     @BeforeAll
     fun setUp() {
         RestAssured.port = port
-        stringRedisTemplate.opsForValue().set("hash", "full-url")
+        redisTemplate.opsForValue().set("hash", "full-url")
     }
 
     companion object {
@@ -67,5 +63,4 @@ class UrlShortenerApplicationTests {
                 .statusCode(200).extract().body().asString(), "full-url"
         )
     }
-
 }
